@@ -91,7 +91,7 @@ const handler = async (m, { conn, participants }) => {
             }
         } else {
             await conn.sendMessage(m.chat, {
-                text: `${finalCaption}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩𝑖'}`,
+                text: `${finalCaption}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'}`,
                 mentions: users
             }, { quoted: m })
         }
