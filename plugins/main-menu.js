@@ -42,7 +42,7 @@ const defaultMenu = {
  %readmore
 *~•~•~•~•~•~•~•~•~•~•~•~•~•~•~•~•~*
 
-\t\t\tF A B x S A I
+\t\t\t𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩
 `.trimStart(),
 header: '┣━━━ *〔* *%category* *〕*━━━┫',
 body: '*┃⋗ 🥃* *%cmd*\n',
@@ -148,7 +148,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
 
-    let pp = 'https://cdn.russellxz.click/9186a684.mp4'
+    let pp = 'https://cdn.russellxz.click/08b2b2a1.jpeg'
     await conn.sendMessage(m.chat, {
   video: { url: 'https://cdn.russellxz.click/9186a684.mp4' },
   caption: text.trim(),
