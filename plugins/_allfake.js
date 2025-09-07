@@ -59,7 +59,7 @@ showAdAttribution: true,
 title: 'FabxSai',
 body: '',
 previewType: "PHOTO",
-thumbnailUrl: 'https://cdn.russellxz.click/eb376cd9.jpeg',
+thumbnailUrl: 'https://cdn.russellxz.click/08b2b2a1.jpeg',
 sourceUrl: '',
 mediaType: 1,
 renderLargerThumbnail: false
