@@ -14,8 +14,8 @@ global.owner = [
   ['29339475284200@lid', 'lid', 'colmenares', true],
   ['59627769213003@lid', 'lid', 'cristian', true],
   ['5215561076182'], 'jid', 'Cristian', true],
-  [''],
-  [''],
+  ['']
+  ['']
   ['']
 ]
 
