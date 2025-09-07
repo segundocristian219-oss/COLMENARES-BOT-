@@ -33,13 +33,13 @@ const handler = async (m, { conn, participants }) => {
 
                     if (finalText) {
                         await conn.sendMessage(m.chat, {
-                            text: `${finalText}\n\n${'> 𝐹𝑎𝑏𝑥𝑆𝑎𝑖'}`,
+                            text: `${finalText}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩𝑖'}`,
                             mentions: users
                         }, { quoted: m })
                     }
                 } catch {
                     await conn.sendMessage(m.chat, {
-                        text: `${finalCaption}\n\n${'> 𝐹𝑎𝑏𝑥𝑆𝑎𝑖'}`,
+                        text: `${finalCaption}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'}`,
                         mentions: users
                     }, { quoted: m })
                 }
@@ -56,7 +56,7 @@ const handler = async (m, { conn, participants }) => {
                     { [mtype || 'extendedTextMessage']: q.message?.[mtype] || { text: finalCaption } },
                     { quoted: m, userJid: conn.user.id }
                 ),
-                `${finalCaption}\n\n${'> 𝐹𝑎𝑏𝑥𝑆𝑎𝑖'}`,
+                `${finalCaption}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'}`,
                 conn.user.jid,
                 { mentions: users }
             )
@@ -74,24 +74,24 @@ const handler = async (m, { conn, participants }) => {
 
                     if (finalText) {
                         await conn.sendMessage(m.chat, {
-                            text: `${finalText}\n\n${'> 𝐹𝑎𝑏𝑥𝑆𝑎𝑖'}`,
+                            text: `${finalText}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'}`,
                             mentions: users
                         }, { quoted: m })
                     }
                 } catch {
                     await conn.sendMessage(m.chat, {
-                        text: `${finalCaption}\n\n${'> 𝐹𝑎𝑏𝑥𝑆𝑎𝑖'}`,
+                        text: `${finalCaption}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'}`,
                         mentions: users
                     }, { quoted: m })
                 }
             } else {
-                if (mtype === 'imageMessage') await conn.sendMessage(m.chat, { image: media, caption: `${finalCaption}\n\n${'> 𝐹𝑎𝑏𝑥𝑆𝑎𝑖'}`, mentions: users }, { quoted: m })
-                if (mtype === 'videoMessage') await conn.sendMessage(m.chat, { video: media, caption: `${finalCaption}\n\n${'> 𝐹𝑎𝑏𝑥𝑆𝑎𝑖'}`, mentions: users, mimetype: 'video/mp4' }, { quoted: m })
+                if (mtype === 'imageMessage') await conn.sendMessage(m.chat, { image: media, caption: `${finalCaption}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'}`, mentions: users }, { quoted: m })
+                if (mtype === 'videoMessage') await conn.sendMessage(m.chat, { video: media, caption: `${finalCaption}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'}`, mentions: users, mimetype: 'video/mp4' }, { quoted: m })
                 if (mtype === 'stickerMessage') await conn.sendMessage(m.chat, { sticker: media, mentions: users }, { quoted: m })
             }
         } else {
             await conn.sendMessage(m.chat, {
-                text: `${finalCaption}\n\n${'> 𝐹𝑎𝑏𝑥𝑆𝑎𝑖'}`,
+                text: `${finalCaption}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩𝑖'}`,
                 mentions: users
             }, { quoted: m })
         }
@@ -99,7 +99,7 @@ const handler = async (m, { conn, participants }) => {
     } catch (e) {
         const users = participants.map(u => conn.decodeJid(u.id))
         await conn.sendMessage(m.chat, {
-            text: `📢 Notificación\n\n${'> 𝐹𝑎𝑏𝑥𝑆𝑎𝑖'}`,
+            text: `📢 Notificación\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'}`,
             mentions: users
         }, { quoted: m })
     }
