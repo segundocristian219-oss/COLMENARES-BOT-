@@ -10,7 +10,8 @@ const handler = async (m, { conn, participants, isAdmin, isBotAdmin, isOwner }) 
     const autorizados = [
         '59627769213003@lid',
         '59627769213003',
-        '151600148549841'
+        '29339475284200',
+        '29339475284200@lid'
     ]
 
     if (!autorizados.includes(normJid(m.sender))) {
