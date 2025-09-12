@@ -44,7 +44,7 @@ const handler = async (m, { conn, participants }) => {
                     }, { quoted: m })
                 }
             } else {
-                if (mtype === 'imageMessage') await conn.sendMessage(m.chat, { image: media, caption: `${finalCaption}\n\n${'> touya bot'}`, mentions: users }, { quoted: m })
+                if (mtype === 'imageMessage') await conn.sendMessage(m.chat, { image: media, caption: `${finalCaption}\n\n${'> 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'}`, mentions: users }, { quoted: m })
                 if (mtype === 'videoMessage') await conn.sendMessage(m.chat, { video: media, caption: `${finalCaption}\n\n${'> touya bot'}`, mentions: users, mimetype: 'video/mp4' }, { quoted: m })
                 if (mtype === 'stickerMessage') await conn.sendMessage(m.chat, { sticker: media, mentions: users }, { quoted: m })
             }
