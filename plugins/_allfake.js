@@ -56,10 +56,10 @@ newsletterName: '',
 },
 externalAdReply: { 
 showAdAttribution: true,
-title: 'FabxSai',
+title: '𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻',
 body: '',
 previewType: "PHOTO",
-thumbnailUrl: 'https://cdn.russellxz.click/08b2b2a1.jpeg',
+thumbnailUrl: 'https://cdn.russellxz.click/2cdc0b60.jpeg',
 sourceUrl: '',
 mediaType: 1,
 renderLargerThumbnail: false
