@@ -29,7 +29,7 @@ const handler = async (m, { conn, participants, isAdmin, isOwner }) => {
 
   // Comando .todos
   if (command === 'todos') {
-    const emoji = groupEmojis[chatId] || '🗣️';
+    const emoji = groupEmojis[chatId] || '🌸';
     const total = participants.length;
 
     let mensaje = `*!  MENCION GENERAL  !*\n`;
