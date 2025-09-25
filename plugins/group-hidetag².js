@@ -33,18 +33,18 @@ const handler = async (m, { conn, participants }) => {
 
                     if (finalText) {
                         await conn.sendMessage(m.chat, {
-                            text: `${finalText}\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`,
+                            text: `${finalText}\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`,
                             mentions: users
                         }, { quoted: m })
                     }
                 } catch {
                     await conn.sendMessage(m.chat, {
-                        text: `${finalCaption}\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`,
+                        text: `${finalCaption}\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`,
                         mentions: users
                     }, { quoted: m })
                 }
             } else {
-                if (mtype === 'imageMessage') await conn.sendMessage(m.chat, { image: media, caption: `${finalCaption}\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`, mentions: users }, { quoted: m })
+                if (mtype === 'imageMessage') await conn.sendMessage(m.chat, { image: media, caption: `${finalCaption}\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`, mentions: users }, { quoted: m })
                 if (mtype === 'videoMessage') await conn.sendMessage(m.chat, { video: media, caption: `${finalCaption}\n\n${'> touya bot'}`, mentions: users, mimetype: 'video/mp4' }, { quoted: m })
                 if (mtype === 'stickerMessage') await conn.sendMessage(m.chat, { sticker: media, mentions: users }, { quoted: m })
             }
@@ -56,7 +56,7 @@ const handler = async (m, { conn, participants }) => {
                     { [mtype || 'extendedTextMessage']: q.message?.[mtype] || { text: finalCaption } },
                     { quoted: m, userJid: conn.user.id }
                 ),
-                `${finalCaption}\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`,
+                `${finalCaption}\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`,
                 conn.user.jid,
                 { mentions: users }
             )
@@ -74,24 +74,24 @@ const handler = async (m, { conn, participants }) => {
 
                     if (finalText) {
                         await conn.sendMessage(m.chat, {
-                            text: `${finalText}\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`,
+                            text: `${finalText}\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`,
                             mentions: users
                         }, { quoted: m })
                     }
                 } catch {
                     await conn.sendMessage(m.chat, {
-                        text: `${finalCaption}\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`,
+                        text: `${finalCaption}\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`,
                         mentions: users
                     }, { quoted: m })
                 }
             } else {
-                if (mtype === 'imageMessage') await conn.sendMessage(m.chat, { image: media, caption: `${finalCaption}\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`, mentions: users }, { quoted: m })
-                if (mtype === 'videoMessage') await conn.sendMessage(m.chat, { video: media, caption: `${finalCaption}\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`, mentions: users, mimetype: 'video/mp4' }, { quoted: m })
+                if (mtype === 'imageMessage') await conn.sendMessage(m.chat, { image: media, caption: `${finalCaption}\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`, mentions: users }, { quoted: m })
+                if (mtype === 'videoMessage') await conn.sendMessage(m.chat, { video: media, caption: `${finalCaption}\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`, mentions: users, mimetype: 'video/mp4' }, { quoted: m })
                 if (mtype === 'stickerMessage') await conn.sendMessage(m.chat, { sticker: media, mentions: users }, { quoted: m })
             }
         } else {
             await conn.sendMessage(m.chat, {
-                text: `${finalCaption}\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`,
+                text: `${finalCaption}\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`,
                 mentions: users
             }, { quoted: m })
         }
@@ -99,7 +99,7 @@ const handler = async (m, { conn, participants }) => {
     } catch (e) {
         const users = participants.map(u => conn.decodeJid(u.id))
         await conn.sendMessage(m.chat, {
-            text: `🌸 Notificación\n\n${'> 𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻'}`,
+            text: `🌸 Notificación\n\n${'> 𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻'}`,
             mentions: users
         }, { quoted: m })
     }
