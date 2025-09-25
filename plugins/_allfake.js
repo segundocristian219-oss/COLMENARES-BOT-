@@ -59,7 +59,7 @@ showAdAttribution: true,
 title: '𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻',
 body: '',
 previewType: "PHOTO",
-thumbnailUrl: 'https://cdn.russellxz.click/2cdc0b60.jpeg',
+thumbnailUrl: 'https://cdn.russellxz.click/d20810f2.jpeg',
 sourceUrl: '',
 mediaType: 1,
 renderLargerThumbnail: false
