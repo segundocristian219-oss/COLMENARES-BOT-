@@ -56,7 +56,7 @@ newsletterName: '',
 },
 externalAdReply: { 
 showAdAttribution: true,
-title: '𝑼𝑹𝑨𝑹𝑨𝑲𝑨 𝑩𝑶𝑻',
+title: '𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻',
 body: '',
 previewType: "PHOTO",
 thumbnailUrl: 'https://cdn.russellxz.click/2cdc0b60.jpeg',
