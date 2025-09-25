@@ -1,268 +1,178 @@
-import fs from "fs"
+import { promises } from 'fs'
+import { join } from 'path'
+import fetch from 'node-fetch'
+import { xpRange } from '../lib/levelling.js'
 
-let handler = async (m, { conn }) => {
-  m.react('🌸')
-
-  let texto = `🪙 𝐌 𝐔 𝐋 𝐓 𝐈 - 𝐌 𝐄 𝐍 𝐔́ 
-
-      「 *📚 𝘐𝘯𝘧𝘰 📚* 」  
-┣━━━━━━━━━━━━━━┫
-┃⋗ 👤 *.owner*  
-┃⋗ 📜 *.menu*  
-┃⋗ 🏓 *.ping* 
-┗━━━━━━━━━━━━━━┛
-
-  「 *🔎 𝘉𝘶𝘴𝘲𝘶𝘦𝘥𝘢𝘴 🔎* 」     
-┣━━━━━━━━━━━━━━┫  
-┃⋗ 🛒 *.mercadolibre*  
-┃⋗ 🖼️ *.pinterest <texto>*  
-┃⋗ 📷 *.imagen <texto>*  
-┃⋗ 📹 *.imag <texto>*  
-┃⋗ 🔍 *.ytsearch <búsqueda>*  
-┗━━━━━━━━━━━━━━┛  
-
-    「 *👥 𝘎𝘳𝘶𝘱𝘰𝘴 👥* 」     
-┣━━━━━━━━━━━━━━┫  
-┃⋗ 🗑️ *.del*   
-┃⋗ 🔗 *.link*  
-┃⋗ ❌ *.kick @user*  
-┃⋗ 🎯 *.ruletaban*   
-┃⋗ 📣 *.todos*  
-┃⋗ 🚫 *.banchat*  
-┃⋗ ✅ *.unbanchat*  
-┃⋗ 🚫 *.mute*  
-┃⋗ ✅ *.unmute*  
-┃⋗ 🤫 *.hidetag*  
-┃⋗ 📜 *.reglas*  
-┃⋗ 👻 *.fantasmas*  
-┃⋗ 🛠️ *.group open / close*  
-┃⋗ 🔓 *.grupo abrir / cerrar*  
-┃⋗ 📝 *.setreglas + Texto*  
-┃⋗ 👋 *.setwelcome @user + texto*  
-┃⋗ 📈 *.promote @usuario*  
-┃⋗ 📉 *.demote @usuario*  
-┗━━━━━━━━━━━━━━┛  
-
-  「 *📥 𝘋𝘦𝘴𝘤𝘢𝘳𝘨𝘢𝘴 📥* 」     
-┣━━━━━━━━━━━━━━┫  
-┃⋗ 🎧 *.play <canción>*
-┃⋗ 🎧 *.spotify <canción>*          
-┗━━━━━━━━━━━━━━┛  
-
-   「 *😺 𝘊𝘳𝘦𝘢𝘥𝘰𝘳 😺* 」     
-┣━━━━━━━━━━━━━━┫  
-┃⋗ 🛡️ *.autoadmin*  
-┃⋗ ⛔ *.ban @user*
-┃⋗ ✅ *.unban @user*  
-┃⋗ 🔑 *.dsowner*  
-┃⋗ 🔑 *.limpiar*  
-┃⋗ 🌐 *.join <link>*  
-┃⋗ 🔄 *.reiniciar*  
-┃⋗ 🚪 *.salir*  
-┃⋗ 🔄 *.update*  
-┗━━━━━━━━━━━━━━┛  
-
-「 *🎨 𝘓𝘰𝘨𝘰 - 𝘮𝘢𝘬𝘦𝘳 🎨* 」     
-┣━━━━━━━━━━━━━━┫  
-┃⋗ ❤️ *.logocorazon <texto>*  
-┃⋗ 🎄 *.logochristmas <texto>*  
-┃⋗ 👩🏻‍❤️‍👨🏻 *.logopareja <texto>*  
-┃⋗ 💥 *.logoglitch <texto>*  
-┃⋗ 😔 *.logosad <texto>*  
-┃⋗ 🎮 *.logogaming <texto>*  
-┃⋗ 🌟 *.logosolitario <texto>*  
-┃⋗ 🐉 *.logodragonball <texto>*  
-┃⋗ ⚡ *.logoneon <texto>*  
-┃⋗ 🐱 *.logogatito <texto>*  
-┃⋗ 🎮 *.logochicagamer <texto>*  
-┃⋗ 💪 *.logoarmy <texto>*  
-┃⋗ 🍥 *.logonaruto <texto>*  
-┃⋗ 🚀 *.logofuturista <texto>*  
-┃⋗ ☁️ *.logonube <texto>*  
-┃⋗ 👼 *.logoangel <texto>*  
-┃⋗ 🌌 *.logocielo <texto>*  
-┃⋗ 🎨 *.logograffiti3d <texto>*  
-┃⋗ 🔲 *.logomatrix <texto>*  
-┃⋗ 👻 *.logohorror <texto>*  
-┃⋗ 🎭 *.logoalas <texto>*  
-┃⋗ 🎮 *.logopubg <texto>*  
-┃⋗ ⚔️ *.logoguerrero <texto>*  
-┃⋗ 🎮 *.logopubgfem <texto>*  
-┃⋗ 🏆 *.logolol <texto>*  
-┃⋗ 👾 *.logoamongus <texto>*  
-┃⋗ 📖 *.logoportadaplayer <texto>*  
-┃⋗ 📝 *.logoportadaff <texto>*  
-┃⋗ 🐅 *.logovideotiger <texto>*  
-┃⋗ 🎬 *.logovideointro <texto>*  
-┃⋗ 🎮 *.logovideogaming <texto>*  
-┃⋗ 😿 *.sadcat <texto>*  
-┃⋗ 🐦 *.tweet <comentario>*  
-┗━━━━━━━━━━━━━━┛  
-
-   「 *📴 𝘖𝘯 / 𝘖𝘧𝘧 📴* 」     
-┣━━━━━━━━━━━━━━┫  
-┃⋗ ✅ *.off*  
-┃⋗ ❌ *.on*  
-┗━━━━━━━━━━━━━━┛  
-
-「 *🔧 𝘏𝘦𝘳𝘳𝘢𝘮𝘪𝘦𝘯𝘵𝘢𝘴 🔧* 」     
-┣━━━━━━━━━━━━━━┫  
-┃⋗ 💻 *.Ia <texto>*  
-┃⋗ 🖼️ *.hd*  
-┃⋗ 🔍 *.ver*  
-┃⋗ 🔄 *.reenviar*  
-┃⋗ 🎥 *.tovid <sticker>* 
-┗━━━━━━━━━━━━━━┛  
-
-   「 *🎲 𝘋𝘪𝘷𝘦𝘳𝘴𝘪𝘰́𝘯 🎲* 」     
-┣━━━━━━━━━━━━━━┫  
-┃⋗ 🤗 *.abrazar <@usuario>*  
-┃⋗ 🐾 *.acariciar @tag*  
-┃⋗ ❓ *.acertijo*  
-┃⋗ 🎲 *.dado* 
-┃⋗ 🎬 *.advpeli*  
-┃⋗ 🛌 *.afk <razón>*  
-┃⋗ 😍 *.minovia @user*
-┃⋗ 😍 *.minovio @user*
-┃⋗ 🌈 *.gay <@tag> | <nombre>*  
-┃⋗ 🌈 *.lesbiana <@tag> | <nombre>*  
-┃⋗ 🐵 *.pajero <@tag> | <nombre>*  
-┃⋗ 🇵🇪 *.peruano <@tag> | <nombre>*  
-┃⋗ 🇵🇪 *.peruana <@tag> | <nombre>*  
-┃⋗ 🐵 *.pajera <@tag> | <nombre>*  
-┃⋗ 😈 *.puto <@tag> | <nombre>*  
-┃⋗ 😈 *.puta <@tag> | <nombre>*  
-┃⋗ 🤕 *.manco <@tag> | <nombre>*  
-┃⋗ 🤕 *.manca <@tag> | <nombre>*  
-┃⋗ 🐀 *.rata <@tag> | <nombre>*  
-┃⋗ 🛑 *.prostituta <@tag> | <nombre>*  
-┃⋗ 🛑 *.prostituto <@tag> | <nombre>*  
-┃⋗ 💡 *.consejo*  
-┃⋗ 💃 *.dance <@user>*  
-┃⋗ 🔍 *.doxear <nombre> | <@tag>*  
-┃⋗ 😈 *.follar*  
-┃⋗ ❤️ *.formarpareja*  
-┃⋗ 🌈 *.gay2*  
-┃⋗ 🔞 *.horny*  
-┃⋗ 🧠 *.iqtest*  
-┃⋗ 💋 *.besar @tag*  
-┃⋗ ❤️ *.love <@user>*  
-┃⋗ 🥰 *.enamorada @tag*  
-┃⋗ 😂 *.meme*  
-┃⋗ 👿 *.cachuda @tag | nombre*  
-┃⋗ ✊🏿 *.negra @tag | nombre*  
-┃⋗ 🍼 *.adoptado @tag | nombre*  
-┃⋗ 👙 *.sintetas @tag | nombre*  
-┃⋗ 🍑 *.sinpoto @tag | nombre*  
-┃⋗ 🍆 *.sinpito @tag | nombre*  
-┃⋗ 😬 *.feo @tag | nombre*  
-┃⋗ 👿 *.cachudo @tag | nombre*  
-┃⋗ 😬 *.fea @tag | nombre*  
-┃⋗ ✊🏿 *.negro @tag | nombre*  
-┃⋗ 🍼 *.adoptada @tag | nombre*  
-┃⋗ 🥷 *.nombreninja <texto>*  
-┃⋗ 😈 *.penetrar @user*  
-┃⋗ 🔮 *.personalidad <nombre>*  
-┃⋗ 💌 *.piropo*  
-┃⋗ 🎴 *.ppt*  
-┃⋗ ❓ *.pregunta*  
-┃⋗ 🎲 *.reto*  
-┃⋗ 😭 *.triste @tag*  
-┃⋗ 👫 *.ship*  
-┃⋗ 🎰 *.slot <apuesta>*  
-┃⋗ 😳 *.sonrojarse @tag*  
-┃⋗ 🔝 *.top <texto>*  
-┃⋗ 🔞 *.violar*  
-┃⋗ 🌌 *.zodiac <AAAA MM DD>*  
-┗━━━━━━━━━━━━━━┛ 
-
-   「 *📌 𝘍𝘳𝘦𝘦 𝘍𝘪𝘳𝘦 📌* 」  
-┣━━━━━━━━━━━━━━┫  
-┃⋗ 🔥 *.4vs4*  
-┃⋗ 🔥 *.6vs6*  
-┃⋗ 🔥 *.8vs8*  
-┃⋗ 🔥 *.12vs12*  
-┃⋗ 🔥 *.16vs16*  
-┃⋗ 💣 *.guerra*  
-┃⋗ 🔐 *.interna*  
-┃⋗ 📜 *.reglasclk*
-┃⋗ ⚔️ *.scrim*  
-┃⋗ 🎮 *.menu4*  
-┃⋗ 🏝️ *.bermuda*  
-┃⋗ 🟦 *.cuadrilatero*  
-┃⋗ 🛑 *.hexagonal* 
-┗━━━━━━━━━━━━━━┛  
-
-   「 *🔉 𝘈𝘶𝘥𝘪𝘰𝘴 🔉* 」  
-┣━━━━━━━━━━━━━━┫  
-┃⋗ 🎵 *.bass <mp3/vn>*  
-┃⋗ 🎵 *.blown <mp3/vn>*  
-┃⋗ 🎵 *.deep <mp3/vn>*  
-┃⋗ 🎵 *.earrape <mp3/vn>*  
-┃⋗ 🎵 *.fast <mp3/vn>*  
-┃⋗ 🎵 *.fat <mp3/vn>*  
-┃⋗ 🎵 *.nightcore <mp3/vn>*  
-┃⋗ 🎵 *.reverse <mp3/vn>*  
-┃⋗ 🎵 *.robot <mp3/vn>*  
-┃⋗ 🎵 *.slow <mp3/vn>*  
-┃⋗ 🎵 *.smooth <mp3/vn>*  
-┃⋗ 🎵 *.tupai <mp3/vn>*  
-┃⋗ 🎵 *.reverb <mp3/vn>*  
-┃⋗ 🎵 *.chorus <mp3/vn>*  
-┃⋗ 🎵 *.flanger <mp3/vn>*  
-┃⋗ 🎵 *.distortion <mp3/vn>*  
-┃⋗ 🎵 *.pitch <mp3/vn>*  
-┃⋗ 🎵 *.highpass <mp3/vn>*  
-┃⋗ 🎵 *.lowpass <mp3/vn>*  
-┃⋗ 🎵 *.underwater <mp3/vn>*  
-┗━━━━━━━━━━━━━━┛  
-
-    「 *𝘚𝘵𝘪𝘤𝘬𝘦𝘳𝘴 🏞* 」     
-┣━━━━━━━━━━━━━━┫  
-┃⋗ 🖼️ *.img (reply)*  
-┃⋗ 💬 *.qc <texto>*   
-┃⋗ 🎨 *.sticker*  
-┃⋗ 🖋️ *.wm <nombre>*
-┃⋗ 🎞️ *.tovid <sticker>*  
-┗━━━━━━━━━━━━━━┛
-
-      「 *𝘕𝘴𝘧𝘸 🔞* 」
-┣━━━━━━━━━━━━━━┫    
-┃⋗ 🔞 *.booty*  
-┃⋗ 🔞 *.ecchi*  
-┃⋗ 🔞 *.furro*  
-┃⋗ 🔞 *.lesbianas*  
-┃⋗ 🔞 *.nsfwloli*  
-┃⋗ 🔞 *.panties*  
-┃⋗ 🔞 *.pene*  
-┃⋗ 🔞 *.rule34 <búsqueda>*  
-┃⋗ 🔞 *.pechos*  
-┃⋗ 🔞 *.tetas*  
-┃⋗ 🔞 *.trapito*  
-┗━━━━━━━━━━━━━━┛
-`
-
-  let img = './src/img/catalogo.jpg'
-  let icono = fs.readFileSync('./src/img/catalogo.jpg')
-
-  await conn.sendMessage(m.chat, {
-    image: { url: img },
-    caption: texto,
-    contextInfo: {
-      externalAdReply: {
-        title: "𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻",
-        body: "",
-        thumbnail: icono,
-        sourceUrl: "",
-        mediaType: 1,
-        renderLargerThumbnail: false
-      }
-    }
-  }, { quoted: m })
-
-  global.db.data.users[m.sender].lastcofre = new Date * 1
+let tags = {
+  'main': '𝘐𝘯𝘧𝘰 📚',
+  'search': '𝘉𝘶𝘴𝘲𝘶𝘦𝘥𝘢𝘴 🔎',
+  'game': '𝘑𝘶𝘦𝘨𝘰𝘴 🎮',
+  'rpg': '𝘙𝘗𝘎 🌠',
+  'rg': '𝘙𝘦𝘨𝘪𝘴𝘵𝘳𝘰 📁',
+  'sticker': '𝘚𝘵𝘪𝘤𝘬𝘦𝘳𝘴 🏞',
+  'img': '𝘐𝘮𝘢́𝘨𝘦𝘯𝘦𝘴 📸',
+  'group': '𝘎𝘳𝘶𝘱𝘰𝘴 👥',
+  'logo': '𝘓𝘰𝘨𝘰 - 𝘮𝘢𝘬𝘦𝘳 🎨',
+  'nable': '𝘖𝘯 / 𝘖𝘧𝘧 📴', 
+  'downloader': '𝘋𝘦𝘴𝘤𝘢𝘳𝘨𝘢𝘴 📥',
+  'tools': '𝘏𝘦𝘳𝘳𝘢𝘮𝘪𝘦𝘯𝘵𝘢𝘴 🔧',
+  'fun': '𝘋𝘪𝘷𝘦𝘳𝘴𝘪𝘰́𝘯 🎲',
+  'nsfw': '𝘕𝘴𝘧𝘸 🔞', 
+  'owner': '𝘊𝘳𝘦𝘢𝘥𝘰𝘳 😺', 
+  'audio': '𝘈𝘶𝘥𝘪𝘰𝘴 🔉', 
+  'advanced': '𝘈𝘷𝘢𝘯𝘻𝘢𝘥𝘰 💠',
+  'freefire': '𝘍𝘳𝘦𝘦 𝘍𝘪𝘳𝘦 📌',
+  'anime': '𝘈𝘯𝘪𝘮𝘦 🌸',
 }
 
-handler.customPrefix = /^(\.menu|menu)$/i
-handler.command = new RegExp
-export default handler
+const defaultMenu = {
+  before: `
+*꒷꒦꒷꒷꒦꒷꒦꒷꒷꒦꒷꒦꒷꒦꒷꒷꒦꒷꒷꒦꒷꒷꒦꒷꒦꒷꒦꒷*
+    
+
+🔥 𝗧𝗶𝗲𝗺𝗽𝗼 𝗔𝗰𝘁𝗶𝘃𝗼: *169 Horas*
+
+💻 𝗛𝗼𝘀𝘁𝗶𝗻𝗴 𝗔𝗰𝘁𝘂𝗮𝗹: 𝗦𝗸𝘆 𝘂𝗹𝘁𝗿𝗮 
+
+🕷️ 𝗖𝗿𝗲𝗮𝗱𝗼𝗿: +5215561076182
+
+
+
+
+ %readmore
+*~•~•~•~•~•~•~•~•~•~•~•~•~•~•~•~•~*
+
+\t\t\t𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻
+`.trimStart(),
+header: '┣━━━ *〔* *%category* *〕*━━━┫',
+body: '*┃⋗ 🌸* *%cmd*\n',
+footer: '┗━━━━━━━━━━━━━━┛\n',
+after: '',
+}
+
+let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
+  try {
+    let _package = JSON.parse(await promises.readFile(join(__dirname, '../package.json')).catch(_ => ({}))) || {}
+    let { exp, limit, level } = global.db.data.users[m.sender]
+    let { min, xp, max } = xpRange(level, global.multiplier)
+    let name = await conn.getName(m.sender)
+    let d = new Date(new Date + 3600000)
+    let locale = 'es'
+    let weton = ['Pahing', 'Pon', 'Wage', 'Kliwon', 'Legi'][Math.floor(d / 84600000) % 5]
+    let week = d.toLocaleDateString(locale, { weekday: 'long' })
+    let date = d.toLocaleDateString(locale, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    })
+    let dateIslamic = Intl.DateTimeFormat(locale + '-TN-u-ca-islamic', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(d)
+    let time = d.toLocaleTimeString(locale, {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    })
+    let _uptime = process.uptime() * 1000
+    let _muptime
+    if (process.send) {
+      process.send('uptime')
+      _muptime = await new Promise(resolve => {
+        process.once('message', resolve)
+        setTimeout(resolve, 1000)
+      }) * 1000
+    }
+    let muptime = clockString(_muptime)
+    let uptime = clockString(_uptime)
+    let totalreg = Object.keys(global.db.data.users).length
+    let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length
+    let help = Object.values(global.plugins).filter(plugin => !plugin.disabled).map(plugin => {
+      return {
+        help: Array.isArray(plugin.tags) ? plugin.help : [plugin.help],
+        tags: Array.isArray(plugin.tags) ? plugin.tags : [plugin.tags],
+        prefix: 'customPrefix' in plugin,
+        limit: plugin.limit,
+        premium: plugin.premium,
+        enabled: !plugin.disabled,
+      }
+    })
+    for (let plugin of help)
+      if (plugin && 'tags' in plugin)
+        for (let tag of plugin.tags)
+          if (!(tag in tags) && tag) tags[tag] = tag
+    conn.menu = conn.menu ? conn.menu : {}
+    let before = conn.menu.before || defaultMenu.before
+    let header = conn.menu.header || defaultMenu.header
+    let body = conn.menu.body || defaultMenu.body
+    let footer = conn.menu.footer || defaultMenu.footer
+    let after = conn.menu.after || (conn.user.jid == global.conn.user.jid ? '' : ``) + defaultMenu.after
+    let _text = [
+      before,
+      ...Object.keys(tags).map(tag => {
+        return header.replace(/%category/g, tags[tag]) + '\n' + [
+          ...help.filter(menu => menu.tags && menu.tags.includes(tag) && menu.help).map(menu => {
+            return menu.help.map(help => {
+              return body.replace(/%cmd/g, menu.prefix ? help : '%p' + help)
+                .replace(/%islimit/g, menu.limit ? '' : '')
+                .replace(/%isPremium/g, menu.premium ? '' : '')
+                .trim()
+            }).join('\n')
+          }),
+          footer
+        ].join('\n')
+      }),
+      after
+    ].join('\n')
+    let text = typeof conn.menu == 'string' ? conn.menu : typeof conn.menu == 'object' ? _text : ''
+    let replace = {
+      '%': '%',
+      p: _p, uptime, muptime,
+      taguser: '@' + m.sender.split("@s.whatsapp.net")[0],
+      wasp: '@0',
+      me: conn.getName(conn.user.jid),
+      npmname: _package.name,
+      version: _package.version,
+      npmdesc: _package.description,
+      npmmain: _package.main,
+      author: _package.author.name,
+      license: _package.license,
+      exp: exp - min,
+      maxexp: xp,
+      totalexp: exp,
+      xp4levelup: max - exp,
+      github: _package.homepage ? _package.homepage.url || _package.homepage : '[unknown github url]',
+      level, limit, name, weton, week, date, dateIslamic, time, totalreg, rtotalreg,
+      readmore: readMore
+    }
+    text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
+
+    let pp = 'https://cdn.russellxz.click/4a19ecba.mp4'
+    await conn.sendMessage(m.chat, {
+  video: { url: 'https://cdn.russellxz.click/4a19ecba.mp4' },
+  caption: text.trim(),
+  gifPlayback: true
+}, { quoted: m })
+
+  } catch (e) {
+    conn.reply(m.chat, 'Lo sentimos, el menú tiene un error.', m)
+    throw e
+  }
+}
+
+handler.customPrefix = /^(menu|menú|ayuda|help)$/i;
+handler.command = new RegExp; // para que funcione sin prefijo
+handler.register = false;
+
+export default handler;
+
+const more = String.fromCharCode(8206)
+const readMore = more.repeat(4001)
+
+function clockString(ms) {
+  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
+  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
+  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
+  return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')
+        }
