@@ -10,8 +10,8 @@ import moment from 'moment-timezone'
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.owner = [
-  ['573105668978', 'jid', 'colmenares', true],
-  ['29339475284200@lid', 'lid', 'colmenares', true],
+  ['5215616282285', 'jid', 'chito', true],
+  ['145432474874060@lid', 'lid', 'chito', true],
   ['148103877402760@lid', 'lid', 'touya', true],
   ['5219624178879', 'jid', 'touya', true],
   ['59627769213003@lid', 'lid', 'cristian', true],
