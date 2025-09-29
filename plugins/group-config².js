@@ -28,7 +28,6 @@ let handler = async (m, { conn }) => {
 handler.customPrefix = /^(?:\.?grupo\s(?:abrir|cerrar|open|close)|\.?(?:abrir|cerrar|open|close))$/i;
 handler.command = new RegExp; // sin prefijo
 handler.admin = true;
-handler.botAdmin = true;
 handler.group = true;
 
 export default handler;
