@@ -47,6 +47,5 @@ handler.customPrefix = /^(promote|\.promote|demote|\.demote)/i;
 handler.command = new RegExp();
 handler.group = true;
 handler.admin = true;
-handler.botAdmin = true;
 
 export default handler;
