@@ -1,112 +1,117 @@
-import fetch from 'node-fetch'
-import yts from 'yt-search'
+import fetch from "node-fetch";
+import yts from "yt-search";
 
-let handler = async (m, { conn: star, command, args, text, usedPrefix }) => {
-  if (!text) return star.reply(m.chat, '🚩 Ingresa el título de un video o canción de YouTube.', m)
-    await m.react('🕓')
+const APIS = [
+  {
+    name: "vreden",
+    url: (videoUrl) => `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(videoUrl)}&quality=64`,
+    extract: (data) => data?.result?.download?.url
+  },
+  {
+    name: "zenkey",
+    url: (videoUrl) => `https://api.zenkey.my.id/api/download/ytmp3?apikey=zenkey&url=${encodeURIComponent(videoUrl)}&quality=64`,
+    extract: (data) => data?.result?.download?.url
+  },
+  {
+    name: "yt1s",
+    url: (videoUrl) => `https://yt1s.io/api/ajaxSearch?q=${encodeURIComponent(videoUrl)}`,
+    extract: async (data) => {
+      const k = data?.links?.mp3?.auto?.k;
+      return k ? `https://yt1s.io/api/ajaxConvert?vid=${data.vid}&k=${k}&quality=64` : null;
+    }
+  }
+];
+
+const getAudioUrl = async (videoUrl) => {
+  let lastError = null;
+
+  for (const api of APIS) {
     try {
-    let res = await search(args.join(" "))
-    let img = await (await fetch(`${res[0].image}`)).buffer()
-    let txt = '─ׄ─ׄ─⭒𝙔𝙤𝙪𝙏𝙪𝙗𝙚 𝙗𝙮 𝙎𝙞𝙨𝙠𝙚𝙙⭒─ׄ─ׄ─\n\n'
-       txt += `📄 *Titulo :* ${res[0].title}\n`
-       txt += `🕐 *Duración :* ${secondString(res[0].duration.seconds)}\n`
-       txt += `📆 *Publicado :* ${eYear(res[0].ago)}\n`
-       txt += `🖇️ *Canal :* ${res[0].author.name || 'Desconocido'}\n`
-       txt += `🚩 *Url :* ${'https://youtu.be/' + res[0].videoId}\n\n`
-       txt += `☁️ Responde a este mensaje con *Audio* o *Vídeo.*`
-await star.sendFile(m.chat, img, 'thumbnail.jpg', txt, m)
-await m.react('✅')
-} catch {
-await m.react('✖️')
-}}
-handler.help = ['musica *<búsqueda>*']
-handler.tags = ['downloader']
-handler.command = ['musica']
-export default handler
+      console.log(`Probando API: ${api.name}`);
+      const apiUrl = api.url(videoUrl);
+      const response = await fetch(apiUrl, { timeout: 5000 });
 
-async function search(query, options = {}) {
-  let search = await yts.search({ query, hl: "es", gl: "ES", ...options })
-  return search.videos
-}
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-function MilesNumber(number) {
-  let exp = /(\d)(?=(\d{3})+(?!\d))/g
-  let rep = "$1."
-  let arr = number.toString().split(".")
-  arr[0] = arr[0].replace(exp, rep)
-  return arr[1] ? arr.join(".") : arr[0]
-}
+      const data = await response.json();
+      const audioUrl = await api.extract(data);
 
-function secondString(seconds) {
-  seconds = Number(seconds);
-  const d = Math.floor(seconds / (3600 * 24));
-  const h = Math.floor((seconds % (3600 * 24)) / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = Math.floor(seconds % 60);
-  const dDisplay = d > 0 ? d + (d == 1 ? ' Día, ' : ' Días, ') : '';
-  const hDisplay = h > 0 ? h + (h == 1 ? ' Hora, ' : ' Horas, ') : '';
-  const mDisplay = m > 0 ? m + (m == 1 ? ' Minuto, ' : ' Minutos, ') : '';
-  const sDisplay = s > 0 ? s + (s == 1 ? ' Segundo' : ' Segundos') : '';
-  return dDisplay + hDisplay + mDisplay + sDisplay;
-}
+      if (audioUrl) {
+        console.log(`Éxito con API: ${api.name}`);
+        return audioUrl;
+      }
+    } catch (error) {
+      console.error(`Error con API ${api.name}:`, error.message);
+      lastError = error;
+      continue;
+    }
+  }
 
-function sNum(num) {
-    return new Intl.NumberFormat('en-GB', { notation: "compact", compactDisplay: "short" }).format(num)
-}
+  throw lastError || new Error("Todas las APIs fallaron");
+};
 
-function eYear(txt) {
-    if (!txt) {
-        return '×'
+let handler = async (m, { conn }) => {
+  const body = m.text?.trim();
+  if (!body) return;
+
+  if (!/^play|.play\s+/i.test(body)) return;
+
+  const query = body.replace(/^(play|.play)\s+/i, "").trim();
+  if (!query) {
+    throw `⭐ Escribe el nombre de la canción\n\nEjemplo: play Bad Bunny - Monaco`;
+  }
+
+  try {
+    await conn.sendMessage(m.chat, { react: { text: "🕒", key: m.key } });
+
+    const searchResults = await yts({ query, hl: 'es', gl: 'ES' });
+    const video = searchResults.videos[0];
+    if (!video) throw new Error("No se encontró el video");
+
+    if (video.seconds > 600) {
+      throw "❌ El audio es muy largo (máximo 10 minutos)";
     }
-    if (txt.includes('month ago')) {
-        var T = txt.replace("month ago", "").trim()
-        var L = 'hace '  + T + ' mes'
-        return L
+
+    // Enviar miniatura con título en negrita/cursiva y texto adicional
+    await conn.sendMessage(m.chat, {
+      image: { url: video.thumbnail },
+      caption: `*_${video.title}_*\n\n> 𝙱𝙰𝙺𝙸 - 𝙱𝙾𝚃 𝙳𝙴𝚂𝙲𝙰𝚁𝙶𝙰𝚂 💻`
+    }, { quoted: m });
+
+    let audioUrl;
+    try {
+      audioUrl = await getAudioUrl(video.url);
+    } catch (e) {
+      console.error("Error al obtener audio:", e);
+      throw "⚠️ Error al procesar el audio. Intenta con otra canción";
     }
-    if (txt.includes('months ago')) {
-        var T = txt.replace("months ago", "").trim()
-        var L = 'hace ' + T + ' meses'
-        return L
-    }
-    if (txt.includes('year ago')) {
-        var T = txt.replace("year ago", "").trim()
-        var L = 'hace ' + T + ' año'
-        return L
-    }
-    if (txt.includes('years ago')) {
-        var T = txt.replace("years ago", "").trim()
-        var L = 'hace ' + T + ' años'
-        return L
-    }
-    if (txt.includes('hour ago')) {
-        var T = txt.replace("hour ago", "").trim()
-        var L = 'hace ' + T + ' hora'
-        return L
-    }
-    if (txt.includes('hours ago')) {
-        var T = txt.replace("hours ago", "").trim()
-        var L = 'hace ' + T + ' horas'
-        return L
-    }
-    if (txt.includes('minute ago')) {
-        var T = txt.replace("minute ago", "").trim()
-        var L = 'hace ' + T + ' minuto'
-        return L
-    }
-    if (txt.includes('minutes ago')) {
-        var T = txt.replace("minutes ago", "").trim()
-        var L = 'hace ' + T + ' minutos'
-        return L
-    }
-    if (txt.includes('day ago')) {
-        var T = txt.replace("day ago", "").trim()
-        var L = 'hace ' + T + ' dia'
-        return L
-    }
-    if (txt.includes('days ago')) {
-        var T = txt.replace("days ago", "").trim()
-        var L = 'hace ' + T + ' dias'
-        return L
-    }
-    return txt
-                                }
+
+    await conn.sendMessage(m.chat, {
+      audio: { url: audioUrl },
+      mimetype: "audio/mpeg",
+      fileName: `${video.title.slice(0, 30)}.mp3`.replace(/[^\w\s.-]/gi, ''),
+      ptt: true
+    }, { quoted: m });
+
+    await conn.sendMessage(m.chat, { react: { text: "✅", key: m.key } });
+
+  } catch (error) {
+    console.error("Error:", error);
+    await conn.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
+
+    const errorMsg = typeof error === 'string' ? error : 
+      `❌ *Error:* ${error.message || 'Ocurrió un problema'}\n\n` +
+      `🔸 *Posibles soluciones:*\n` +
+      `• Verifica el nombre de la canción\n` +
+      `• Intenta con otro tema\n` +
+      `• Prueba más tarde`;
+
+    await conn.sendMessage(m.chat, { text: errorMsg }, { quoted: m });
+  }
+};
+
+handler.customPrefix = /^(play|.play)\s+/i;
+handler.command = new RegExp;
+handler.exp = 0;
+
+export default handler;
