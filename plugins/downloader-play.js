@@ -1,117 +1,107 @@
-import fetch from "node-fetch";
+import axios from "axios";
 import yts from "yt-search";
+import fs from "fs";
+import path from "path";
+import ffmpeg from "fluent-ffmpeg";
+import { promisify } from "util";
+import { pipeline } from "stream";
 
-const APIS = [
-  {
-    name: "vreden",
-    url: (videoUrl) => `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(videoUrl)}&quality=64`,
-    extract: (data) => data?.result?.download?.url
-  },
-  {
-    name: "zenkey",
-    url: (videoUrl) => `https://api.zenkey.my.id/api/download/ytmp3?apikey=zenkey&url=${encodeURIComponent(videoUrl)}&quality=64`,
-    extract: (data) => data?.result?.download?.url
-  },
-  {
-    name: "yt1s",
-    url: (videoUrl) => `https://yt1s.io/api/ajaxSearch?q=${encodeURIComponent(videoUrl)}`,
-    extract: async (data) => {
-      const k = data?.links?.mp3?.auto?.k;
-      return k ? `https://yt1s.io/api/ajaxConvert?vid=${data.vid}&k=${k}&quality=64` : null;
-    }
-  }
-];
+const streamPipe = promisify(pipeline);
 
-const getAudioUrl = async (videoUrl) => {
-  let lastError = null;
+const handler = async (msg, { conn, text }) => {
+  const pref = global.prefixes?.[0] || ".";
 
-  for (const api of APIS) {
-    try {
-      console.log(`Probando API: ${api.name}`);
-      const apiUrl = api.url(videoUrl);
-      const response = await fetch(apiUrl, { timeout: 5000 });
-
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-      const data = await response.json();
-      const audioUrl = await api.extract(data);
-
-      if (audioUrl) {
-        console.log(`Éxito con API: ${api.name}`);
-        return audioUrl;
-      }
-    } catch (error) {
-      console.error(`Error con API ${api.name}:`, error.message);
-      lastError = error;
-      continue;
-    }
+  if (!text || !text.trim()) {
+    return conn.sendMessage(
+      msg.key.remoteJid,
+      { text: `✳️ Usa:\n${pref}play <término>\nEj: *${pref}play* bad bunny diles` },
+      { quoted: msg }
+    );
   }
 
-  throw lastError || new Error("Todas las APIs fallaron");
-};
+  await conn.sendMessage(msg.key.remoteJid, {
+    react: { text: "🕒", key: msg.key }
+  });
 
-let handler = async (m, { conn }) => {
-  const body = m.text?.trim();
-  if (!body) return;
-
-  if (!/^play|.play\s+/i.test(body)) return;
-
-  const query = body.replace(/^(play|.play)\s+/i, "").trim();
-  if (!query) {
-    throw `⭐ Escribe el nombre de la canción\n\nEjemplo: play Bad Bunny - Monaco`;
+  const res = await yts(text);
+  const video = res.videos[0];
+  if (!video) {
+    return conn.sendMessage(
+      msg.key.remoteJid,
+      { text: "❌ Sin resultados." },
+      { quoted: msg }
+    );
   }
+
+  const { url: videoUrl, title, timestamp: duration, author, thumbnail } = video;
+  const artista = author.name;
 
   try {
-    await conn.sendMessage(m.chat, { react: { text: "🕒", key: m.key } });
+    const infoMsg = `
+> *𝚈𝙾𝚄𝚃𝚄𝙱𝙴 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳𝙴𝚁*
 
-    const searchResults = await yts({ query, hl: 'es', gl: 'ES' });
-    const video = searchResults.videos[0];
-    if (!video) throw new Error("No se encontró el video");
+🎵 *𝚃𝚒𝚝𝚞𝚕𝚘:* ${title}
+🎤 *𝙰𝚛𝚝𝚒𝚜𝚝𝚊:* ${artista}
+🕑 *𝙳𝚞𝚛𝚊𝚌𝚒ó𝚗:* ${duration}
+`.trim();
 
-    if (video.seconds > 600) {
-      throw "❌ El audio es muy largo (máximo 10 minutos)";
-    }
+    await conn.sendMessage(
+      msg.key.remoteJid,
+      { image: { url: thumbnail }, caption: infoMsg },
+      { quoted: msg }
+    );
 
-    // Enviar miniatura con título en negrita/cursiva y texto adicional
-    await conn.sendMessage(m.chat, {
-      image: { url: video.thumbnail },
-      caption: `*_${video.title}_*\n\n> 𝙱𝙰𝙺𝙸 - 𝙱𝙾𝚃 𝙳𝙴𝚂𝙲𝙰𝚁𝙶𝙰𝚂 💻`
-    }, { quoted: m });
+    const api = `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(videoUrl)}&type=audio&quality=128kbps&apikey=russellxz`;
+    const r = await axios.get(api);
+    if (!r.data?.status || !r.data.data?.url) throw new Error("No se pudo obtener el audio");
 
-    let audioUrl;
-    try {
-      audioUrl = await getAudioUrl(video.url);
-    } catch (e) {
-      console.error("Error al obtener audio:", e);
-      throw "⚠️ Error al procesar el audio. Intenta con otra canción";
-    }
+    const tmp = path.join(process.cwd(), "tmp");
+    if (!fs.existsSync(tmp)) fs.mkdirSync(tmp);
+    const inFile = path.join(tmp, `${Date.now()}_in.m4a`);
+    const outFile = path.join(tmp, `${Date.now()}_out.mp3`);
 
-    await conn.sendMessage(m.chat, {
-      audio: { url: audioUrl },
-      mimetype: "audio/mpeg",
-      fileName: `${video.title.slice(0, 30)}.mp3`.replace(/[^\w\s.-]/gi, ''),
-      ptt: true
-    }, { quoted: m });
+    const dl = await axios.get(r.data.data.url, { responseType: "stream" });
+    await streamPipe(dl.data, fs.createWriteStream(inFile));
 
-    await conn.sendMessage(m.chat, { react: { text: "✅", key: m.key } });
+    await new Promise((res, rej) =>
+      ffmpeg(inFile)
+        .audioCodec("libmp3lame")
+        .audioBitrate("128k")
+        .format("mp3")
+        .save(outFile)
+        .on("end", res)
+        .on("error", rej)
+    );
 
-  } catch (error) {
-    console.error("Error:", error);
-    await conn.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
+    const buffer = fs.readFileSync(outFile);
 
-    const errorMsg = typeof error === 'string' ? error : 
-      `❌ *Error:* ${error.message || 'Ocurrió un problema'}\n\n` +
-      `🔸 *Posibles soluciones:*\n` +
-      `• Verifica el nombre de la canción\n` +
-      `• Intenta con otro tema\n` +
-      `• Prueba más tarde`;
+    await conn.sendMessage(
+      msg.key.remoteJid,
+      {
+        audio: buffer,
+        mimetype: "audio/mpeg",
+        fileName: `${title}.mp3`,
+        ptt: false
+      },
+      { quoted: msg }
+    );
 
-    await conn.sendMessage(m.chat, { text: errorMsg }, { quoted: m });
+    fs.unlinkSync(inFile);
+    fs.unlinkSync(outFile);
+
+    await conn.sendMessage(msg.key.remoteJid, {
+      react: { text: "✅", key: msg.key }
+    });
+  } catch (e) {
+    console.error(e);
+    await conn.sendMessage(
+      msg.key.remoteJid,
+      { text: "⚠️ Error al descargar el audio." },
+      { quoted: msg }
+    );
   }
 };
 
-handler.customPrefix = /^(play|.play)\s+/i;
-handler.command = new RegExp;
-handler.exp = 0;
+handler.command = ["play"];
 
 export default handler;
