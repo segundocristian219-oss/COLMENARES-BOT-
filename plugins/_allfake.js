@@ -56,10 +56,10 @@ newsletterName: '',
 },
 externalAdReply: { 
 showAdAttribution: true,
-title: '𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻',
+title: '𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓',
 body: '',
 previewType: "PHOTO",
-thumbnailUrl: 'https://cdn.russellxz.click/d20810f2.jpeg',
+thumbnailUrl: 'https://cdn.russellxz.click/66ba7d29.jpeg',
 sourceUrl: '',
 mediaType: 1,
 renderLargerThumbnail: false
