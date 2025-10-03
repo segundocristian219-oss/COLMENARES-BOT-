@@ -45,7 +45,7 @@ const defaultMenu = {
 \t\t\t𝑲𝑰𝑻𝑻𝒀 𝑩𝑶𝑻
 `.trimStart(),
 header: '┣━━━ *〔* *%category* *〕*━━━┫',
-body: '*┃⋗ 🌸* *%cmd*\n',
+body: '*┃⋗ ❄️* *%cmd*\n',
 footer: '┗━━━━━━━━━━━━━━┛\n',
 after: '',
 }
@@ -148,9 +148,9 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
 
-    let pp = 'https://cdn.russellxz.click/4a19ecba.mp4'
+    let pp = 'https://cdn.russellxz.click/c5af53ac.mp4'
     await conn.sendMessage(m.chat, {
-  video: { url: 'https://cdn.russellxz.click/4a19ecba.mp4' },
+  video: { url: 'https://cdn.russellxz.click/c5af53ac.mp4' },
   caption: text.trim(),
   gifPlayback: true
 }, { quoted: m })
