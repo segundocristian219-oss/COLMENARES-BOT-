@@ -3,15 +3,15 @@ import PhoneNumber from 'awesome-phonenumber'
 let handler = async (m, { conn }) => {
   if (m.quoted?.fromMe || m.isButton) return
 
-  m.react('⛩️')
+  m.react('❄️')
 
-  const imageUrl = 'https://cdn.russellxz.click/08b2b2a1.jpeg'
-  const numCreador = '573105668978'
+  const imageUrl = 'https://cdn.russellxz.click/66ba7d29.jpeg'
+  const numCreador = '5215616282285'
   const ownerJid = numCreador + '@s.whatsapp.net'
 
-  const name = '𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 ⛩️'
-  const about = '𝐒𝐨𝐲 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨, 𝐃𝐮𝐞𝐧̃𝐨 𝐃𝐞𝐥 𝐁𝐨𝐭: 𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 𝘽𝙤𝙩'
-  const empresa = '𝘾𝙭𝙡𝙢𝙚𝙣𝙖𝙧𝙚𝙨 - 𝐒𝐞𝐫𝐯𝐢𝐜𝐢𝐨𝐬 𝐭𝐞𝐜𝐧𝐨𝐥𝐨́𝐠𝐢𝐜𝐨𝐬 ⛩️'
+  const name = '𝐂𝐇𝐈𝐓𝐎 ❄️'
+  const about = '𝐒𝐨𝐲 𝐂𝐇𝐈𝐓𝐎, 𝐃𝐮𝐞𝐧̃𝐨 𝐃𝐞𝐥 𝐁𝐨𝐭: 𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓'
+  const empresa = '𝐂𝐇𝐈𝐓𝐎 - 𝐒𝐞𝐫𝐯𝐢𝐜𝐢𝐨𝐬 𝐭𝐞𝐜𝐧𝐨𝐥𝐨́𝐠𝐢𝐜𝐨𝐬 ❄️'
   const instagramUrl = ''
 
   const vcard = `
@@ -44,8 +44,8 @@ END:VCARD`.trim()
       contextInfo: {
         mentionedJid: [m.sender],
         externalAdReply: {
-          title: 'FabxSai',
-          body: 'FabxSai',
+          title: '𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓',
+          body: '𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓',
           thumbnailUrl: imageUrl,
           sourceUrl: instagramUrl,
           mediaType: 1,
