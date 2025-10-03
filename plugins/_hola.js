@@ -1,7 +1,7 @@
 let handler = async (m, { conn }) => {
   try {
     switch (m.text.toLowerCase()) {
-      case 'hola':
+      case '':
         conn.sendPresenceUpdate('recording', m.chat);
         await conn.sendFile(m.chat, 'https://qu.ax/HPeS.mp3', 'hola.mp3', null, m, true, { type: 'audioMessage' });
         break;
