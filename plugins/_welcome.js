@@ -3,7 +3,7 @@ import { WAMessageStubType } from '@whiskeysockets/baileys'
 export async function before(m, { conn, participants, groupMetadata }) {
   if (!m.messageStubType || !m.isGroup) return true
 
-  const defaultPP = 'https://cdn.russellxz.click/b9107b6b.jpeg'
+  const defaultPP = 'https://cdn.russellxz.click/66ba7d29.jpeg'
     const welcomeAudioUrl = 'https://qu.ax/sjtTL.opus'
   const byeAudioUrl = 'https://qu.ax/LhbNi.opus'
 
