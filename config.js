@@ -28,19 +28,19 @@ global.prems = []
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.packname = `𝑭𝒂𝒃𝒙𝑺𝒂𝒊`
-global.author = '{\n "𝗕𝗼𝘁": {\n   "name": "𝑭𝒂𝒃𝒙𝑺𝒂𝒊",\n     "author": "𝐶𝑅𝐼𝑆𝑇𝐼𝐴𝑁",\n   "status_bot": "active"\n }\n}'
-global.wait = '𝑭𝒂𝒃𝒙𝑺𝒂𝒊'
-global.botname = '𝑭𝒂𝒃𝒙𝑺𝒂𝒊'
-global.textbot = `𝗪𝗵𝗮𝘁𝘀𝗮𝗽𝗽 de 𝑭𝒂𝒃𝒙𝑺𝒂𝒊 ☕`
-global.listo = '𝗙𝗶𝗻𝗮𝗹𝗶𝘇𝗮𝗱𝗼 ☕'
-global.namechannel = '𝑭𝒂𝒃𝒙𝑺𝒂𝒊 ☕'
+global.packname = `𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓`
+global.author = '{\n "𝗕𝗼𝘁": {\n   "name": "𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓",\n     "author": "𝐶𝑅𝐼𝑆𝑇𝐼𝐴𝑁",\n   "status_bot": "active"\n }\n}'
+global.wait = '𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓'
+global.botname = '𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓'
+global.textbot = `𝗪𝗵𝗮𝘁𝘀𝗮𝗽𝗽 de 𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓 ❄️`
+global.listo = '𝗙𝗶𝗻𝗮𝗹𝗶𝘇𝗮𝗱𝗼 ❄️'
+global.namechannel = '𝐅𝐑𝐎𝐙𝐎𝐍𝐎 𝐁𝐎𝐓 ❄️'
 global.baileys = '@whiskeysockets/baileys'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.catalogo = 'https://files.catbox.moe/ntyp5r.jpg'
-global.miniurl = 'https://files.catbox.moe/ntyp5r.jpg'
+global.catalogo = 'https://cdn.russellxz.click/66ba7d29.jpeg'
+global.miniurl = 'https://cdn.russellxz.click/66ba7d29.jpeg'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
